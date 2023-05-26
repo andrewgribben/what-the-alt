@@ -2,6 +2,7 @@ import argparse
 import requests
 from bs4 import BeautifulSoup
 import os
+import shutil
 
 # User-defined path to the Python virtual environment
 virtualenv_path = '/Users/grib/invokeai/.venv'
@@ -28,6 +29,11 @@ with open('alt_text.txt', 'w') as f:
 virtualenv_activate = os.path.join(virtualenv_path, 'bin', 'activate')
 invoke_script = os.path.join(virtualenv_path, 'bin/invoke.py')
 os.system(f'source {virtualenv_activate}; python {invoke_script} --from_file alt_text.txt')
+
+for alt_text, image_name in image_data:
+    output_image_path = os.path.join(virtualenv_path, 'outputs', image_name)
+    destination_path = os.path.join(os.getcwd(), image_name)
+    shutil.move(output_image_path, destination_path)
 
 def generate_html(image_data):
     with open('output.html', 'w') as html_file:
